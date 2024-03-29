@@ -19,3 +19,25 @@ Lorsque l'on met TaskTake prioritaire par rapport a TaskGive, l'ordre d'appariti
 AvantTake, AvantGive, ApresTake, Avant Take, ApresGive. 
 
 Ces changements s'expliquent par le fait que lorsque le TaskTake est prioritaire, il doit attendre le semaphore du TaskGive avant de passer et se met en pause (laissant passer le TaskGive). Lorsque le TaskGive du semaphore passe, le TaskTake reprend le dessus puisqu'il est prioritaire sur le TaskGive.
+
+# 1.3 Notifications
+7)
+On remplace 
+
+xSemaphoreGive(xSemaphore);
+
+par 
+
+xTaskNotifyGive(handle_taskTake);
+
+dans TaskGive et on remplace 
+
+if (xSemaphoreTake(xSemaphore, 1000)== pdTRUE){
+		printf("Apres TaskTake\r\n");} 
+
+par
+
+if (ulTaskNotifyTake(pdTRUE,1000)== pdTRUE){
+		printf("Apres TaskTake\r\n");}
+
+dans TaskTake.

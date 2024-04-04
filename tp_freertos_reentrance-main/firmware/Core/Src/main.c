@@ -51,6 +51,8 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+SemaphoreHandle_t SemaMutex;
+
 
 /* USER CODE END PV */
 
@@ -75,8 +77,16 @@ void task1(void * pvParameters)
 
 	for(;;)
 	{
-		printf("Je suis la tache 1 et je m'endors pour %d ticks\r\n", delay);
-		vTaskDelay(delay);
+		// prend mutex
+		if (SemaMutex != NULL){// The semaphore was created successfully and can be used.
+			if( xSemaphoreTake( SemaMutex, portMAX_DELAY ) == pdTRUE )
+			{
+				printf("Je suis la tache 1 et je m'endors pour %d ticks\r\n", delay);
+			}
+			// rend mutex
+			xSemaphoreGive( SemaMutex );
+			vTaskDelay(delay);
+		}
 	}
 }
 
@@ -86,8 +96,16 @@ void task2(void * pvParameters)
 
 	for(;;)
 	{
-		printf("Je suis la tache 2 et je m'endors pour %d ticks\r\n", delay);
-		vTaskDelay(delay);
+		// prend mutex
+		if (SemaMutex != NULL){// The semaphore was created successfully and can be used.
+			if( xSemaphoreTake( SemaMutex, portMAX_DELAY ) == pdTRUE )
+			{
+				printf("Je suis la tache 2 et je m'endors pour %d ticks\r\n", delay);
+			}
+			// rend mutex
+			xSemaphoreGive( SemaMutex );
+			vTaskDelay(delay);
+		}
 	}
 }
 /* USER CODE END 0 */
@@ -125,6 +143,8 @@ int main(void)
 	BaseType_t ret;
 	TaskHandle_t h_task1 = NULL;
 	TaskHandle_t h_task2 = NULL;
+
+	SemaMutex = xSemaphoreCreateMutex();
 
 	/* Create the task, storing the handle. */
 	ret = xTaskCreate(task1, "Tache 1", STACK_SIZE, (void *) TASK1_DELAY, TASK1_PRIORITY, &h_task1);

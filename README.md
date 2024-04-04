@@ -23,39 +23,42 @@ Ces changements s'expliquent par le fait que lorsque le TaskTake est prioritaire
 # 1.3 Notifications
 7)
 On remplace 
-
+```C
 xSemaphoreGive(xSemaphore);
-
+```
 par 
-
+```C
 xTaskNotifyGive(handle_taskTake);
-
+```
 dans TaskGive et on remplace 
-
+```C
 if (xSemaphoreTake(xSemaphore, 1000)== pdTRUE){
 		printf("Apres TaskTake\r\n");} 
-
+```
 par
-
+```C
 if (ulTaskNotifyTake(pdTRUE,1000)== pdTRUE){
 		printf("Apres TaskTake\r\n");}
-
+```
 dans TaskTake.
 
 # 1.4 Queues
 8)
 on cree la queue 
+```C
 QueueHandle_t xQueue;//declaration de la variable
 xQueue = xQueueCreate(5, sizeof(int)); //Dans le main
-
+```
 Puis dans TaskGive:
+```C
 if (xQueue !=0){
 	xQueueSend( xQueue, (const void *) &i, portMAX_DELAY);}
-
+```
 Puis dans TaskTake:
+```C
 if (xQueueReceive( xQueue, (void *) &reception, 1000)== pdTRUE){
 	printf("Apres TaskTake %d\r\n", reception);}
-
+```
 # 1.5 Reentrance et exclusion mutuelle
 11)
 Dans la console, les taches 1 et 2 s'endorment toutes les 2 pour 2 ticks.
@@ -63,4 +66,8 @@ Cela est du au printf de la tache 1 qui ne s'effectu pas suffisament rapidement.
 
 Pour modifier cela, on met en place un semaphore mutex qui permet de bloquer les interruptions eventuelles pour proteger les printf des taches 1 et 2.
 En pratiquen on appelle le semaphoreTake mutex avant un printf et on appelle un semaphoreGive mutex apres un printf.
+
+# 2 On joue avec le Shell
+
+
 

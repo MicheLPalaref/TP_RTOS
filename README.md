@@ -41,3 +41,17 @@ if (ulTaskNotifyTake(pdTRUE,1000)== pdTRUE){
 		printf("Apres TaskTake\r\n");}
 
 dans TaskTake.
+
+# 1.4 Queues
+8)
+on cree la queue 
+QueueHandle_t xQueue;//declaration de la variable
+xQueue = xQueueCreate(5, sizeof(int)); //Dans le main
+
+Puis dans TaskGive:
+if (xQueue !=0){
+	xQueueSend( xQueue, (const void *) &i, portMAX_DELAY);}
+
+Puis dans TaskTake:
+if (xQueueReceive( xQueue, (void *) &reception, 1000)== pdTRUE){
+	printf("Apres TaskTake %d\r\n", reception);}

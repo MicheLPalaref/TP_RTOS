@@ -70,4 +70,9 @@ En pratiquen on appelle le semaphoreTake mutex avant un printf et on appelle un 
 # 2 On joue avec le Shell
 
 
+![image](https://github.com/MicheLPalaref/TP_RTOS/assets/144770627/da115db0-ce1c-400c-85b2-d005a1e31565)
+
+Les premieres fonctions appellent une fonction bidon ou une fonciton somme.
+
+
 

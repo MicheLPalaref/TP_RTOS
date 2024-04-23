@@ -49,6 +49,7 @@
 
 /* USER CODE BEGIN PV */
 	TaskHandle_t h_task_shell = NULL;
+	TaskHandle_t handle_task_blink_led;
 
 /* USER CODE END PV */
 
@@ -66,6 +67,22 @@ int __io_putchar(int ch)
 	HAL_UART_Transmit(&huart1, (uint8_t*)&ch, 1, HAL_MAX_DELAY);
 
 	return ch;
+}
+
+static uint32_t period = 100;
+
+void task_blink_led(int * unused){
+
+	vTaskSuspend(0);	// Se suspend elle meme
+
+	for( ;; )
+	{
+		/* Simply toggle the LED every 100ms, blocking between each toggle. */
+		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+//		printf("LED Toggle\r\n");
+		//vToggleLED();
+		vTaskDelay( period / portTICK_PERIOD_MS );
+	}
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
@@ -108,11 +125,37 @@ int addition(int argc, char ** argv)
 	}
 }
 
+int led(int argc, char ** argv)
+{
+	/*fait clignoter P1, un param gère la periode de developpement, 0=eteint, le cligno se fait dans une tache*/
+
+	printf("Je suis une fonction qui allume une led \r\n");
+
+	period = atoi(argv[1]);
+	if (period == 0) {
+		printf("LED OFF\r\n");
+		// éteind la led
+		// suspend la tache
+		vTaskSuspend(handle_task_blink_led);
+		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+	}
+	else
+	{
+		printf("LED BLINK\r\n");
+		// clignote la led
+		// resume la tache
+		vTaskResume(handle_task_blink_led);
+	}
+
+	return 0;
+}
+
 void task_shell(void * unused)
 {
 	shell_init();
 	shell_add('f', fonction, "Une fonction inutile");
 	shell_add('a', addition, "Effectue une somme");
+	shell_add('l',led, "Led Clignotte");
 	shell_run();	// boucle infinie
 }
 /* USER CODE END 0 */
@@ -152,6 +195,16 @@ int main(void)
 		printf("Error creating task shell\r\n");
 		Error_Handler();
 	}
+
+	xTaskCreate(
+			task_blink_led,
+			"LED",
+			256,
+			NULL,
+			1,
+			&handle_task_blink_led
+	);
+
 
 	vTaskStartScheduler();
   /* USER CODE END 2 */

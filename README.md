@@ -74,5 +74,90 @@ En pratiquen on appelle le semaphoreTake mutex avant un printf et on appelle un 
 
 Les premieres fonctions appellent une fonction bidon ou une fonciton somme.
 
+Pour creer la fonction Led, cela se deroule en plusieurs etapes:
+La tache Task_blink_led:
+
+```C
+	//Le handler
+TaskHandle_t handle_task_blink_led;
+
+	//la tache
+static uint32_t period = 100; // variable globale statique
+
+void task_blink_led(int * unused){
+
+	vTaskSuspend(0);	// Se suspend elle meme
+
+	for( ;; )
+	{
+		/* Simply toggle the LED every period ms, blocking between each toggle. */
+		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+		//vToggleLED();
+		vTaskDelay( period / portTICK_PERIOD_MS );
+	}
+}
+
+	//Task Create
+xTaskCreate(
+		task_blink_led,
+		"LED",
+		256,
+		NULL,
+		1,
+		&handle_task_blink_led
+	);
+```
+
+Ensuite on cree le shell led
+
+```C
+int led(int argc, char ** argv)
+{
+	/*fait clignoter P1, un param gère la periode de developpement, 0=eteint, le cligno se fait dans une tache*/
+
+	printf("Je suis une fonction qui allume une led \r\n");
+
+	period = atoi(argv[1]);
+	if (period == 0) {
+		printf("LED OFF\r\n");
+		// suspend la tache
+		// eteind la led
+		vTaskSuspend(handle_task_blink_led);
+		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+	}
+	else
+	{
+		printf("LED BLINK\r\n");
+		// clignote la led
+		// resume la tache
+		vTaskResume(handle_task_blink_led);
+	}
+
+	return 0;
+}
+
+void task_shell(void * unused)
+{
+	shell_init();
+	shell_add('f', fonction, "Une fonction inutile");
+	shell_add('a', addition, "Effectue une somme");
+	shell_add('l', led, "Led Clignotte");
+	shell_run();	// boucle infinie
+}
+
+```
+![alt text](image.png)
+
+en appelant le shell led et en definissant son parametre "period" on fait varier la periode de clignottement de la led P1. Si period = 0, la led s'eteind.
+
+
+# 3 Debug, gestion d'erreur et statistiques
+
+# 3.1 Gestion du tas
+
+
+
+
+
 
 

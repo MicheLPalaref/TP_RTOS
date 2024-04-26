@@ -312,13 +312,13 @@ Lorsqu'on utilise vTaskDelay, l'Idle est utilise presque 100% du temps puisque l
 ![alt text](image-14.png)
 
 
-Lorsqu'on utilise HAL_Delay, on voit la fonction LED etre utilisee de plus en plus avec le temps si la LED est appelee.
+Lorsqu'on utilise HAL_Delay, on voit la tache LED etre utilisee de plus en plus avec le temps si la LED est appelee.
 Au final, on peut se rendre compte du temps pendant laquelle chaque tache se deroule:
 ![alt text](image-16.png)
 
 ![alt text](image-17.png)
 
-Si la fonction LED tourne, LED aura plus de temps d'occupation de la memoire.
-Si la fonction ELD ne tourne pas, IDLE aura plus de temps d'occupation de la memoire.
+Si la tache LED tourne, LED aura plus de temps d'occupation de la memoire.
+Si la tache LED ne tourne pas, IDLE aura plus de temps d'occupation de la memoire.
 
 Cet equilibre evolu en fonction du temps ou chaque fonction est active.

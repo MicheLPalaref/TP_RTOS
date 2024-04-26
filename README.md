@@ -220,7 +220,16 @@ Pour changer la valeur du tas, on change la valeur TOTAL_HEAP_SIZE de FreeRTOS d
 
 La nouvelle taille de la memoire est donc:
 ![alt text](image-4.png)
+![alt text](image-5.png)
 
+8.
+On remarque que la RAM utilisee est passee de 5.73% a 47.92%
+ceci est la consequence de l'augmentation de la valeur TOTAL_HEAP_SIZE.
+Le nombre de taches pouvant etre execute passe de 7 a 71.
+
+
+
+# 3.2 Gestion des piles
 
 
 

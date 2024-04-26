@@ -308,3 +308,17 @@ Puisqu'on va utiliser le timer2, on doit l'activer:
 ![alt text](image-12.png) 
 On oubliera pas de parametrer le Prescaler a 10 ou 100 fois la vitesse d'execution de l'OS (108 000 000 Hz)
 
+Lorsqu'on utilise vTaskDelay, l'Idle est utilise presque 100% du temps puisque les taches LED et Shell ne sont appelees qu'a des moments disctincts et que l'IDLE tourne en boucle.
+![alt text](image-14.png)
+
+
+Lorsqu'on utilise HAL_Delay, on voit la fonction LED etre utilisee de plus en plus avec le temps si la LED est appelee.
+Au final, on peut se rendre compte du temps pendant laquelle chaque tache se deroule:
+![alt text](image-16.png)
+
+![alt text](image-17.png)
+
+Si la fonction LED tourne, LED aura plus de temps d'occupation de la memoire.
+Si la fonction ELD ne tourne pas, IDLE aura plus de temps d'occupation de la memoire.
+
+Cet equilibre evolu en fonction du temps ou chaque fonction est active.

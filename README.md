@@ -237,6 +237,31 @@ On mets egalement RECORD_STACK_HIGH_ADDRESS a enable
 ![alt text](image-7.png)
 
 
+Pour creer une erreur sur la pile, on creer dans le task_sheel:
+```C
+	int tableau[512];
+
+	for (int i = 0 ; i < 512 ; i++)
+	{
+		tableau[i] = i;
+		printf("%d %d\r\n", i, tableau[i]);
+	}
+
+	printf("Zut\r\n");
+
+
+
+//En amont on defini la tache vApplicationStackOverflowHook qui sera appelee a chaque depassement de la pile
+	void vApplicationStackOverflowHook(xTaskHandle xTask, signed char *pcTaskName)
+{
+	/* Run time stack overflow checking is performed if
+   configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2. This hook function is
+   called if a stack overflow is detected. */
+	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);//Allumer la LED
+	Error_Handler();//Appel du ERROR_HANDLER
+
+}
+```
 
 
 

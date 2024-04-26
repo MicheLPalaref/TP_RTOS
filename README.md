@@ -264,4 +264,47 @@ Pour creer une erreur sur la pile, on creer dans le task_sheel:
 ```
 
 
+Idle Hook Function sert a mettre le processeur en economie d'energie.
+Il est appele par les taches de derineres priorite, n'etant donc appele que si toutes les autres fonctions ne sont pas appelees.
+
+Tick Hook Function sert a implementer des fonctionnalites de timer.
+
+Malloc Failed Hook Function sert a gerer les problemes causes par des malloc.
+
+# 3.3 Statistiques dans l'IDE
+1.
+![alt text](image-8.png)
+
+4.
+En lancant puis en mettant en pause, la fenetre FreeRTOS Task List affiche les taches suivantes:
+![alt text](image-9.png)
+
+Dans une tache avec peu de variables locales, le Shell ne prends que 18% de la pile:
+![alt text](image-10.png)
+
+Dans une tache avec 128 variables locales, le Shell prends 52.7% de la pile:
+![alt text](image-11.png)
+
+
+
+6.
+On utilise les deux fonctions suivantes:
+```C
+void configureTimerForRunTimeStats(void)
+{
+	// Appelée au début par l'OS
+	// Lance un timer
+	HAL_TIM_Base_Start(&htim2);
+}
+
+unsigned long getRunTimeCounterValue(void)
+{
+	// Appelé à chaque changement de contexte
+	// Il faut retourner la valeur du compteur
+	return __HAL_TIM_GET_COUNTER(&htim2);
+}
+```
+Puisqu'on va utiliser le timer2, on doit l'activer:
+![alt text](image-12.png) 
+On oubliera pas de parametrer le Prescaler a 10 ou 100 fois la vitesse d'execution de l'OS (108 000 000 Hz)
 

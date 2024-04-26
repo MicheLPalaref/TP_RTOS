@@ -231,8 +231,10 @@ Le nombre de taches pouvant etre execute passe de 7 a 71.
 
 # 3.2 Gestion des piles
 
+![alt text](image-6.png)
 
-
+On mets egalement RECORD_STACK_HIGH_ADDRESS a enable
+![alt text](image-7.png)
 
 
 

@@ -154,6 +154,54 @@ en appelant le shell led et en definissant son parametre "period" on fait varier
 # 3 Debug, gestion d'erreur et statistiques
 
 # 3.1 Gestion du tas
+1.
+Segment de donnees: zone memoire dreservee a l'allocation des variables statiques (globales, globales static, locales static)
+
+Pile: Variables locales (temporaires) = un genre d'allocation dynamique, mais different du malloc
+Quand on cree une variable dans une fonction, elle est cree dans la pile. Quand on sort de la fonction, les variables disparaissent.
+
+Tas: zone memoire reservee a l'allocation des variables dynamiques.
+
+2.
+La zone reservee a l'allocation dynamique est geree par FreeRTOS.
+
+3.
+
+Il existe 2 facons de signaler une erreur:
+```C
+//premiere facon:
+if (xTaskCreate(task_shell, "Shell", TASK_SHELL_STACK_DEPTH, NULL, TASK_SHELL_PRIORITY, &h_task_shell) != pdPASS)
+	{
+		printf("Error creating task shell\r\n");
+		Error_Handler();
+	}
+
+// Deuxieme facon:
+	BaseType_t ret;
+
+	ret = xTaskCreate(
+			task_blink_led,
+			"LED",
+			256,
+			NULL,
+			1,
+			&handle_task_blink_led
+	);
+
+	if (ret != pdPASS)
+	{
+		printf("Error creating task LED\r\n");
+		Error_Handler();
+	}
+
+```
+4.
+![alt text](image-1.png)
+La memoire RAM utilisee est de 320 Ko
+La memoire FLASH utilisee est de 1024 Ko
+
+
+
 
 
 

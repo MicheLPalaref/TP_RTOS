@@ -198,7 +198,8 @@ if (xTaskCreate(task_shell, "Shell", TASK_SHELL_STACK_DEPTH, NULL, TASK_SHELL_PR
 4.
 ![alt text](image-1.png)
 
-La memoire RAM utilisee est de 320 Ko
+La memoire RAM utilisee est de 320 Ko.
+
 La memoire FLASH utilisee est de 1024 Ko
 
 

@@ -160,7 +160,7 @@ Segment de donnees: zone memoire dreservee a l'allocation des variables statique
 Pile: Variables locales (temporaires) = un genre d'allocation dynamique, mais different du malloc
 Quand on cree une variable dans une fonction, elle est cree dans la pile. Quand on sort de la fonction, les variables disparaissent.
 
-Tas: zone memoire reservee a l'allocation des variables dynamiques.
+Tas: zone memoire reservee a l'allocation des variables dynamiques (malloc ou x*Create).
 
 2.
 La zone reservee a l'allocation dynamique est geree par FreeRTOS.
@@ -206,11 +206,20 @@ La memoire FLASH utilisee est de 1024 Ko
 Pour creer des taches jusqu'a obtenir une erreur, on implemente une boucle FOR sur le TaskCreate:
 ![alt text](image-2.png)
 
+6.
 On remarque que:
 
 La memoire RAM utilisee est de 320 Ko.
 
 La memoire FLASH utilisee est de 1024 Ko
+Soit, aucun changement avec le cas precedent.
+
+7.
+Pour changer la valeur du tas, on change la valeur TOTAL_HEAP_SIZE de FreeRTOS d'un facteur 10:
+![alt text](image-3.png)
+
+La nouvelle taille de la memoire est donc:
+![alt text](image-4.png)
 
 
 

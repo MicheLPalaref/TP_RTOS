@@ -107,6 +107,7 @@ int fonction(int argc, char ** argv)
 	return 0;
 }
 
+
 int addition(int argc, char ** argv)
 {
 	if (argc == 3)
@@ -190,10 +191,12 @@ int main(void)
 	MX_GPIO_Init();
 	MX_USART1_UART_Init();
 	/* USER CODE BEGIN 2 */
+	for(;;){
 	if (xTaskCreate(task_shell, "Shell", TASK_SHELL_STACK_DEPTH, NULL, TASK_SHELL_PRIORITY, &h_task_shell) != pdPASS)
 	{
 		printf("Error creating task shell\r\n");
 		Error_Handler();
+	}
 	}
 
 	BaseType_t ret;

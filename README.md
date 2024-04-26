@@ -202,6 +202,15 @@ La memoire RAM utilisee est de 320 Ko.
 
 La memoire FLASH utilisee est de 1024 Ko
 
+5.
+Pour creer des taches jusqu'a obtenir une erreur, on implemente une boucle FOR sur le TaskCreate:
+![alt text](image-2.png)
+
+On remarque que:
+
+La memoire RAM utilisee est de 320 Ko.
+
+La memoire FLASH utilisee est de 1024 Ko
 
 
 
